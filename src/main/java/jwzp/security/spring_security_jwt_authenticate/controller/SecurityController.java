@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 public class SecurityController {
 
-    private List<Book> booksList;
+    private final List<Book> booksList;
 
     public SecurityController() {
         booksList = new ArrayList<>();

@@ -30,7 +30,7 @@ public class JWTGenerator {
                 .expirationTime(new Date(new Date().getTime() + 1020 * 1000))
                 .build();
 
-        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), jwtClaimsSet);
+        SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), jwtClaimsSet);
         signedJWT.sign(signer);
 
         return ResponseEntity.of(Optional.of(signedJWT.serialize()));

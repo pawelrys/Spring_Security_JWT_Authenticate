@@ -10,6 +10,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        //Przypisujemy obowiązkowe uwierzytelnienie przy wywołaniu posta /books oraz uwierzytelnienie z autoryzacją przy wowałuniu Delete /books/{id}
         http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/books").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/books/*").hasRole("ADMIN")
                 .anyRequest().permitAll()

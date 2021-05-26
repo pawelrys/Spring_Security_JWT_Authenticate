@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class JWTController {
 
+    //Zwraca wygenerowany JWT na podstawie wprowadzonych loginu i passwordu
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) throws JOSEException {
-        return JWTGenerator.generateJWT(user);
+        return ResponseEntity.of(JWTGenerator.generateJWT(user));
     }
 }

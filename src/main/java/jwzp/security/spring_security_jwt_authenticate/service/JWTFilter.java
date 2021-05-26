@@ -4,19 +4,14 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.PlainJWT;
 import com.nimbusds.jwt.SignedJWT;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,16 +19,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class JWTFilter extends BasicAuthenticationFilter {
 
+    //Secret key, za pomocą którego koduje JWT oraz sprawdzam poprawność przy odkodowaniu
     String secret = "841D8A6C80CBA4FCAD32D5367C18C53B";
 
     public JWTFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
 
+    //Przechwytywanie żądania i sprawdzanie poprawności JWT
+    //Jeżeli token poprawny, sprawdzam dane logowania oraz przypisuje rolę
+    //jeżeli nie, zwracam nowego. nieuwierzytelnionego usera
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
@@ -65,6 +63,7 @@ public class JWTFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
+    //Sprawdzanie poprawności JWT
     public boolean isSignatureValid(String token) {
         SignedJWT signedJWT;
         try {

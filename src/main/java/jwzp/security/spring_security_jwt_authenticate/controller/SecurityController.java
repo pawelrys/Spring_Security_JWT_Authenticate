@@ -18,16 +18,19 @@ public class SecurityController {
         booksList.add(new Book("Czterej pancerni i pies", "Janusz Przymanowski", "Vesper"));
     }
 
+    //Dostępne dla każdego
     @GetMapping("/books")
     public List<Book> getBooks() {
         return booksList;
     }
 
+    //Dostępne dla uwierzytelnionego użytkownika
     @PostMapping("/books")
     public boolean addBook(@RequestBody Book book) {
         return booksList.add(book);
     }
 
+    //Dostępne dla uwierzytelnionego użytkownika i zautoryzowanego jako admin
     @DeleteMapping("/books/{id}")
     public void deleteBook(@PathVariable int id) {
         booksList.remove(id);

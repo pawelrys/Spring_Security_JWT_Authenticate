@@ -18,7 +18,7 @@ public class JWTGenerator {
         JWSSigner signer = new MACSigner(secret.getBytes(StandardCharsets.UTF_8));
         //Sprawdzenie, czy dane logowania sie zgadzają
         //Jeżeli nie:
-        //return ResponseEntity.status(401).body("Incorrect login details!");
+        //return Optional.empty();
 
         //Zakładam, że odnalezione dane logowania należą do administratora
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
@@ -26,7 +26,7 @@ public class JWTGenerator {
                 .claim("password", user.getPassword())
                 .claim("role", "ROLE_ADMIN")
                 //Ważność tokenu to 20 sekund VV
-                .expirationTime(new Date(new Date().getTime() + 1020 * 1000))
+                .expirationTime(new Date(new Date().getTime() + 20 * 1000))
                 .build();
 
         SignedJWT signedJWT = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build(), jwtClaimsSet);

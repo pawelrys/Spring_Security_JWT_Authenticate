@@ -14,6 +14,9 @@ public class JWTController {
     //Zwraca wygenerowany JWT na podstawie wprowadzonych loginu i passwordu
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) throws JOSEException {
-        return ResponseEntity.of(JWTGenerator.generateJWT(user));
+        var result = JWTGenerator.generateJWT(user);
+        return result.isPresent()
+                ? ResponseEntity.ok(result.get())
+                : ResponseEntity.status(401).body("Incorrect login details");
     }
 }
